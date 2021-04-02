@@ -19,8 +19,15 @@ class MainFragment: Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
         this._binding = MainFragmentBinding.bind(view)
 
+        val adapter = ToDoAdapter()
+        binding.recycler.adapter = adapter
+
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_createToDoFragment)
+        }
+
+        vm.todoList.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(list)
         }
     }
 
