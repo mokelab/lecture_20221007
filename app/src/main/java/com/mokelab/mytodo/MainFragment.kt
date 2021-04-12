@@ -19,7 +19,10 @@ class MainFragment: Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
         this._binding = MainFragmentBinding.bind(view)
 
-        val adapter = ToDoAdapter()
+        val adapter = ToDoAdapter {
+            val action = MainFragmentDirections.actionMainFragmentToToDoDetailFragment(it)
+            findNavController().navigate(action)
+        }
         binding.recycler.adapter = adapter
 
         binding.fab.setOnClickListener {

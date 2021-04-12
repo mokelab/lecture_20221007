@@ -9,14 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mokelab.mytodo.databinding.TodoItemBinding
 import com.mokelab.mytodo.model.todo.ToDo
 
-class ToDoAdapter: ListAdapter<ToDo, ToDoAdapter.ViewHolder>(
+class ToDoAdapter(
+    private val listener: (ToDo) -> Unit
+): ListAdapter<ToDo, ToDoAdapter.ViewHolder>(
     callbacks
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TodoItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+
+        val viewHolder = ViewHolder(binding)
+        binding.root.setOnClickListener {
+            val position = viewHolder.bindingAdapterPosition
+            val todo = getItem(position)
+            listener(todo)
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
