@@ -28,7 +28,11 @@
     <fragment
         android:id="@+id/editToDoFragment"
         android:name="com.mokelab.mytodo.page.edit.EditToDoFragment"
-        android:label="EditToDoFragment" />
+        android:label="EditToDoFragment" >
+        <argument
+            android:name="todo"
+            app:argType="com.mokelab.mytodo.model.todo.ToDo" />
+    </fragment>
     <fragment
         android:id="@+id/toDoDetailFragment"
         android:name="com.mokelab.mytodo.page.detail.ToDoDetailFragment"
