@@ -47,5 +47,12 @@
         <argument
             android:name="todo"
             app:argType="com.mokelab.mytodo.model.todo.ToDo" />
+        <action
+            android:id="@+id/action_toDoDetailFragment_to_confirmDialogFragment"
+            app:destination="@id/confirmDialogFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/confirmDialogFragment"
+        android:name="com.mokelab.mytodo.dialog.ConfirmDialogFragment"
+        android:label="ConfirmDialogFragment" />
 </navigation>
