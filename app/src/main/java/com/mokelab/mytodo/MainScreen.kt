@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, toCreate: () -> Unit) {
+fun MainScreen(viewModel: MainViewModel, toCreate: () -> Unit, toDetail: (Int) -> Unit) {
     val list by viewModel.todoList.observeAsState(emptyList())
 
     Scaffold(topBar = {},
@@ -34,6 +34,7 @@ fun MainScreen(viewModel: MainViewModel, toCreate: () -> Unit) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
+                        toDetail(it._id)
                     }) {
                     ListItem(
                         headlineText = {

@@ -1,12 +1,10 @@
 package com.mokelab.mytodo.page.detail
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.mokelab.mytodo.model.todo.ToDo
 import com.mokelab.mytodo.repository.todo.ToDoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,10 +12,15 @@ import javax.inject.Inject
 class ToDoDetailViewModel @Inject constructor(
     private val toDoRepository: ToDoRepository,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
+    private val todoId = savedStateHandle.getLiveData<Int>("id")
     val todo = savedStateHandle.getLiveData<ToDo>("todo")
     val errorMessage = MutableLiveData<String>()
     val deleted = MutableLiveData<Boolean>()
+
+    val todo2 = todoId.asFlow().map {
+        toDoRepository.getById(it)
+    }
 
     fun delete() {
         viewModelScope.launch {

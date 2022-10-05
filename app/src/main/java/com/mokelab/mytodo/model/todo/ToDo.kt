@@ -14,4 +14,8 @@ data class ToDo(
     val detail: String,
     val created: Long,
     val modified: Long
-): Parcelable
+) : Parcelable {
+    companion object {
+        val empty = ToDo(0, "", "", 0, 0)
+    }
+}

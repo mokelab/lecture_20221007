@@ -12,6 +12,9 @@ interface ToDoDAO {
     @Query("select * from ToDo order by created desc")
     fun getAll(): Flow<List<ToDo>>
 
+    @Query("select * from ToDo where _id=:id limit 1")
+    suspend fun getById(id: Int): ToDo
+
     @Insert
     suspend fun create(todo: ToDo)
 
