@@ -4,4 +4,6 @@
     <string name="detail">Detail</string>
     <string name="save">Save</string>
     <string name="create">Create</string>
+    <string name="delete">Delete</string>
+    <string name="delete_message">Would you delete this ToDo?</string>
 </resources>

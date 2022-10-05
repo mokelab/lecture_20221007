@@ -7,20 +7,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mokelab.mytodo.R
 import com.mokelab.mytodo.model.todo.ToDo
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit, toEdit: () -> Unit) {
     val todo by viewModel.todo2.collectAsStateWithLifecycle(initialValue = ToDo.empty)
+    var expanded by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    val deleted by viewModel.deleted.observeAsState()
+
+    LaunchedEffect(deleted) {
+        if (deleted == true) back()
+    }
 
     Scaffold(topBar = {
         TopAppBar(
@@ -35,6 +44,18 @@ fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit, toEdit: (
             actions = {
                 IconButton(onClick = toEdit) {
                     Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+                }
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(stringResource(R.string.delete))
+                        }, onClick = {
+                            expanded = false
+                            showDeleteDialog = true
+                        })
                 }
             }
         )
@@ -55,5 +76,25 @@ fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit, toEdit: (
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            text = { Text(stringResource(R.string.delete_message)) },
+            onDismissRequest = { showDeleteDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteDialog = false
+                    viewModel.delete2()
+                }) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
     }
 }
