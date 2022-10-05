@@ -11,6 +11,8 @@ import com.mokelab.mytodo.page.create.CreateToDoScreen
 import com.mokelab.mytodo.page.create.CreateToDoViewModel
 import com.mokelab.mytodo.page.detail.ToDoDetailScreen
 import com.mokelab.mytodo.page.detail.ToDoDetailViewModel
+import com.mokelab.mytodo.page.edit.EditToDoScreen
+import com.mokelab.mytodo.page.edit.EditToDoViewModel
 
 @Composable
 fun MyToDoApp() {
@@ -39,7 +41,18 @@ fun MyToDoApp() {
             arguments = listOf(navArgument("id") { type = NavType.IntType }),
         ) {
             val vm: ToDoDetailViewModel = hiltViewModel()
-            ToDoDetailScreen(vm, back = back)
+            ToDoDetailScreen(vm, back = back, toEdit = {
+                val todoId = it.arguments?.getInt("id") ?: return@ToDoDetailScreen
+                navController.navigate("detail/${todoId}/edit")
+            })
+        }
+
+        composable(
+            "detail/{id}/edit",
+            arguments = listOf(navArgument("id") { type = NavType.IntType }),
+        ) {
+            val vm: EditToDoViewModel = hiltViewModel()
+            EditToDoScreen(vm, back = back)
         }
     }
 }

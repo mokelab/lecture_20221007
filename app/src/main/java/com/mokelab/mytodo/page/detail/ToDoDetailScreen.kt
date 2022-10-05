@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,7 +19,7 @@ import com.mokelab.mytodo.model.todo.ToDo
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
-fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit) {
+fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit, toEdit: () -> Unit) {
     val todo by viewModel.todo2.collectAsStateWithLifecycle(initialValue = ToDo.empty)
 
     Scaffold(topBar = {
@@ -30,7 +31,13 @@ fun ToDoDetailScreen(viewModel: ToDoDetailViewModel, back: () -> Unit) {
                 IconButton(onClick = back) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                 }
-            })
+            },
+            actions = {
+                IconButton(onClick = toEdit) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+                }
+            }
+        )
     }) { paddingValues ->
         Column(
             modifier = Modifier
