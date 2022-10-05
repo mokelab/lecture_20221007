@@ -1,6 +1,9 @@
 package com.mokelab.mytodo
 
 import android.text.format.DateFormat
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,19 +31,25 @@ fun MainScreen(viewModel: MainViewModel, toCreate: () -> Unit) {
             modifier = Modifier.padding(paddingValues)
         ) {
             items(list) {
-                ListItem(
-                    headlineText = {
-                        Text(it.title)
-                    },
-                    overlineText = {
-                        Text(
-                            DateFormat.format(
-                                "yyyy-MM-dd hh:mm:ss",
-                                it.created
-                            ).toString()
-                        )
-                    }
-                )
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                    }) {
+                    ListItem(
+                        headlineText = {
+                            Text(it.title)
+                        },
+                        supportingText = {
+                            Text(
+                                DateFormat.format(
+                                    "yyyy-MM-dd hh:mm:ss",
+                                    it.created
+                                ).toString()
+                            )
+                        }
+                    )
+                    Divider()
+                }
             }
         }
     }
